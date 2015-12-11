@@ -6,7 +6,7 @@ var expressValidator = require('express-validator');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var passport = require('passport');
-var localStrategy = require('passport-local').Strategy;
+var LocalStrategy = require('passport-local').Strategy;
 var bodyParser = require('body-parser');
 var multer = require('multer');
 var flash = require('connect-flash');
@@ -45,6 +45,7 @@ app.use(session({
 
 // passport
 app.use(passport.initialize());
+// app.use(passport.authenticate());
 app.use(passport.session());
 
 // validator
