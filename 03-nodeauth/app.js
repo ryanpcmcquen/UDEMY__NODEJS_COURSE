@@ -24,7 +24,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // handle file uploads
-app.use(multer({dest:'./uploads'}).single(profileimage));
+app.use(multer({dest:'./uploads'}));
 /*
 var uploads = multer({
   dest: './uploads'
