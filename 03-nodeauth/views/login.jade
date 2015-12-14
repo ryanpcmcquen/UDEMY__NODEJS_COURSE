@@ -3,7 +3,7 @@ extends layout
 block content
   h1 Log in
   p Please log in below
-  form(method='post', action='/users/login', enctype='application/json')
+  form(method='post', action='/users/login')
     .form-group
       label Username
       input.form-control(name='name', type='text')

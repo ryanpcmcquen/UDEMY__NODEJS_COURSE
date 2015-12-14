@@ -24,9 +24,12 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // handle file uploads
+app.use(multer({dest:'./uploads'}).single(profileimage));
+/*
 var uploads = multer({
   dest: './uploads'
 });
+*/
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -73,6 +76,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
 app.use(function(req, res, next) {
   res.locals.messages = require('express-messages')(req, res);
+  next();
+});
+
+app.get('*', function(req, res, next){
+  res.locals.user = req.user || null;
   next();
 });
 

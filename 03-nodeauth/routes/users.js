@@ -1,10 +1,11 @@
 var express = require('express');
+var app = express();
 var router = express.Router();
 
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
-var User = require('../models/user.js');
+var User = require('../models/user');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -32,7 +33,7 @@ router.post('/register', function(req, res, next) {
   var password2 = req.body.password2;
 
   // check for image field
-  if (req.body.profileimage) {
+  if (req.files.profileimage) {
     var profileImageName;
     console.log('Uploading file ...');
 
@@ -138,6 +139,7 @@ passport.use(new LocalStrategy(function(username, password, done) {
 }));
 
 router.post('/login', passport.authenticate('local', {
+  successRedirect: '/',
   failureRedirect: '/users/login',
   failureFlash: 'Invalid username or password'
 }), function(req, res) {
@@ -145,5 +147,6 @@ router.post('/login', passport.authenticate('local', {
   req.flash('success', 'You are logged in');
   res.redirect('/');
 });
+
 
 module.exports = router;
