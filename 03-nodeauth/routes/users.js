@@ -33,7 +33,7 @@ router.post('/register', function(req, res, next) {
   var password2 = req.body.password2;
 
   // check for image field
-  if (req.files.profileimage) {
+  if (req.body.profileimage) {
     var profileImageName;
     console.log('Uploading file ...');
 
@@ -139,17 +139,17 @@ passport.use(new LocalStrategy(function(username, password, done) {
 }));
 
 router.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
   failureRedirect: '/users/login',
   failureFlash: 'Invalid username or password'
-}), function(req, res) {
-  console.log('Authentication successful');
-  req.flash('success', 'You are logged in');
-  res.redirect('/');
+  }),
+  function(req, res) {
+    console.log('Authentication successful');
+    req.flash('success', 'You are logged in');
+    res.redirect('/');
 });
 
 router.get('/logout', function(req, res) {
-  req.logout;
+  req.logout();
   req.flash('success', 'You have logged out');
   res.redirect('/users/login');
 });

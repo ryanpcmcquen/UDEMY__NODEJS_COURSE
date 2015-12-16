@@ -7,6 +7,7 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Members' });
 });
 */
+
 // Members Page
 router.get('/', ensureAuthenticated, function(req, res, next) {
   res.render('index', {
