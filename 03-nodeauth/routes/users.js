@@ -121,7 +121,7 @@ passport.use(new LocalStrategy(function(username, password, done) {
       });
     }
 
-    User.comparePassword(password, user.password, function(err, isMatch) {
+    user.comparePassword(password, user.password, function(err, isMatch) {
       if (err) {
         throw err;
       }
