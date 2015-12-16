@@ -141,11 +141,12 @@ passport.use(new LocalStrategy(function(username, password, done) {
 router.post('/login', passport.authenticate('local', {
   failureRedirect: '/users/login',
   failureFlash: 'Invalid username or password'
-  }),
-  function(req, res) {
-    console.log('Authentication successful');
-    req.flash('success', 'You are logged in');
-    res.redirect('/');
+}),
+
+function(req, res) {
+  console.log('Authentication successful');
+  req.flash('success', 'You are logged in');
+  res.redirect('/');
 });
 
 router.get('/logout', function(req, res) {
