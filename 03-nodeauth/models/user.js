@@ -34,7 +34,7 @@ var UserSchema = mongoose.Schema({
 var User = module.exports = mongoose.model('User', UserSchema);
 
 module.exports.comparePassword = function(candidatePassword, hash, callback) {
-  hasher.compare(candidatePassword, hash, function(err, isMatch) {
+  hasher(candidatePassword, hash, function(err, isMatch) {
     if (err) {
       return callback(err);
     }
@@ -55,7 +55,7 @@ module.exports.getUserByUsername = function(username, callback) {
 
 
 module.exports.createUser = function(newUser, callback) {
-  hasher.hash(newUser.password, 10, function(err, hash) {
+  hasher(newUser.password, function(err, hash) {
     if (err) {
       throw err;
     }
