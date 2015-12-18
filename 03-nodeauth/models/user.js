@@ -1,5 +1,10 @@
 var mongoose = require('mongoose');
-var bcrypt = require('bcrypt-small');
+var NodePbkdf2 = require('node-pbkdf2'),
+  hasher = new NodePbkdf2({
+    iterations: 10000,
+    saltLength: 12,
+    derivedKeyLength: 30
+  });
 mongoose.connect('mongodb://localhost/nodeauth');
 
 var db = mongoose.connection;
@@ -13,7 +18,6 @@ var UserSchema = mongoose.Schema({
   password: {
     type: String,
     required: true,
-    bcrypt: true
   },
   email: {
     type: String
@@ -30,7 +34,7 @@ var UserSchema = mongoose.Schema({
 var User = module.exports = mongoose.model('User', UserSchema);
 
 module.exports.comparePassword = function(candidatePassword, hash, callback) {
-  bcrypt.compare(candidatePassword, hash, function(err, isMatch) {
+  hasher.compare(candidatePassword, hash, function(err, isMatch) {
     if (err) {
       return callback(err);
     }
@@ -51,7 +55,7 @@ module.exports.getUserByUsername = function(username, callback) {
 
 
 module.exports.createUser = function(newUser, callback) {
-  bcrypt.hash(newUser.password, 10, function(err, hash) {
+  hasher.hash(newUser.password, 10, function(err, hash) {
     if (err) {
       throw err;
     }
