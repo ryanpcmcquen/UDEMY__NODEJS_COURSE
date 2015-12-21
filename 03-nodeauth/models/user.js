@@ -1,11 +1,11 @@
 var mongoose = require('mongoose');
-var crypto = require('crypto');
+var bcrypt = require('bcrypt');
 
 mongoose.connect('mongodb://localhost/nodeauth');
 
 var db = mongoose.connection;
 
-// user schema
+// User Schema
 var UserSchema = mongoose.Schema({
   username: {
     type: String,
@@ -14,6 +14,7 @@ var UserSchema = mongoose.Schema({
   password: {
     type: String,
     required: true,
+    bcrypt: true
   },
   email: {
     type: String
@@ -26,88 +27,32 @@ var UserSchema = mongoose.Schema({
   }
 });
 
-
-
-UserSchema.methods = {
-
-
-  /**
-   * Make salt
-   *
-   * @return {String}
-   * @api public
-   */
-
-  makeSalt: function() {
-    return Math.round((new Date().valueOf() * Math.random())) + '';
-  },
-
-  /**
-   * Encrypt password
-   *
-   * @param {String} password
-   * @return {String}
-   * @api public
-   */
-
-  /**
-   * Validation is not required if using OAuth
-   */
-
-  skipValidation: function() {
-    return ~oAuthTypes.indexOf(this.provider);
-  }
-};
-
 var User = module.exports = mongoose.model('User', UserSchema);
 
-// module.exports.comparePassword = function(candidatePassword, hash, callback) {
-//   hasher(candidatePassword, hash, function(err, isMatch) {
-//     if (err) {
-//       return callback(err);
-//     }
-//     callback(null, isMatch);
-//   });
-// };
-
-module.exports.comparePassword = function(plainText) {
-  return this.encryptedPassword(plainText) === this.hashed_password;
-};
-
+module.exports.comparePassword = function(candidatePassword, hash, callback) {
+  bcrypt.compare(candidatePassword, hash, function(err, isMatch) {
+    if (err) return callback(err);
+    callback(null, isMatch);
+  });
+}
 
 module.exports.getUserById = function(id, callback) {
   User.findById(id, callback);
-};
+}
 
 module.exports.getUserByUsername = function(username, callback) {
   var query = {
     username: username
   };
   User.findOne(query, callback);
-};
-
+}
 
 module.exports.createUser = function(newUser, callback) {
-  // var hash = crypto
-  //   .createHash("sha512")
-  //   .update(req.body.password)
-  //   .digest('hex');
-  var password = newUser.password;
-  var encryptedPassword = function(password) {
-    if (!password) return '';
-    try {
-      return crypto
-        .createHash("sha512")
-        // .createHmac('sha512', this.salt)
-        .update(password)
-        .digest('hex');
-    } catch (err) {
-      return '';
-    }
-
-    // set hashed pw
-    password = encryptedPassword;
-    // create user
-    newUser.save(callback);
-  }
-};
+  bcrypt.hash(newUser.password, 10, function(err, hash) {
+    if (err) throw err;
+    // Set hashed pw
+    newUser.password = hash;
+    // Create User
+    newUser.save(callback)
+  });
+}

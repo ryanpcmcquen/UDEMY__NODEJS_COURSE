@@ -1,5 +1,5 @@
 {
-  "name": "03-nodeauth",
+  "name": "nodeauth",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -13,7 +13,6 @@
     "jade": "*",
     "morgan": "*",
     "serve-favicon": "*",
-    "kerberos": "*",
     "mongodb": "*",
     "mongoose": "*",
     "connect-flash": "*",
@@ -24,6 +23,6 @@
     "passport-local": "*",
     "passport-http": "*",
     "multer": "*",
-    "node-pbkdf2": "*"
+    "bcrypt": "*"
   }
 }

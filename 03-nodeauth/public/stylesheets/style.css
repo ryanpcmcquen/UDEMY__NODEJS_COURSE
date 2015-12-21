@@ -1,25 +1,20 @@
 body {
   padding: 50px;
-  font-family: Georgia;
+  font-family: arial;
 }
-
 a {
   color: #00B7FF;
 }
-
 ul.success li, ul.info li, ul.error li {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin: 20px 0 20px 0;
   padding: 15px;
-  border-style: solid;
-  border-width: 1px;
+  border: 1px solid transparent;
   border-radius: 5px;
-  list-style-type: none;
+  list-style: none;
 }
-
 ul.success li {
   color: #3c763d;
-  background-color: #dff0d8;
+  background: #dff0d8;
   border-color: #d6e9c6;
 }
 ul.info li {
@@ -27,8 +22,8 @@ ul.info li {
   background-color: #d9edf7;
   border-color: #bce8f1;
 }
-ul.error li {
-  color: #57002a;
-  background-color: #ff5c82;
-  border-color: #240008;
+ul.success li {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
 }
