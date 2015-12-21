@@ -1,9 +1,6 @@
 var mongoose = require('mongoose');
 var crypto = require('crypto');
-var hash = crypto
-  .createHash("sha512")
-  .update(req.body.pass)
-  .digest('hex');
+
 mongoose.connect('mongodb://localhost/nodeauth');
 
 var db = mongoose.connection;
@@ -53,8 +50,6 @@ UserSchema.methods = {
    * @api public
    */
 
-  ,
-
   /**
    * Validation is not required if using OAuth
    */
@@ -76,7 +71,7 @@ var User = module.exports = mongoose.model('User', UserSchema);
 // };
 
 module.exports.comparePassword = function(plainText) {
-  return this.encryptPassword(plainText) === this.hashed_password;
+  return this.encryptedPassword(plainText) === this.hashed_password;
 };
 
 
@@ -93,19 +88,25 @@ module.exports.getUserByUsername = function(username, callback) {
 
 
 module.exports.createUser = function(newUser, callback) {
-  // hasher(newUser.password, function(err, hash) {
-  encryptPassword = function(password) {
+  // var hash = crypto
+  //   .createHash("sha512")
+  //   .update(req.body.password)
+  //   .digest('hex');
+  var password = newUser.password;
+  var encryptedPassword = function(password) {
     if (!password) return '';
     try {
       return crypto
-        .createHmac('sha512', this.salt)
+        .createHash("sha512")
+        // .createHmac('sha512', this.salt)
         .update(password)
         .digest('hex');
     } catch (err) {
       return '';
     }
+
     // set hashed pw
-    newUser.password = hash;
+    password = encryptedPassword;
     // create user
     newUser.save(callback);
   }
