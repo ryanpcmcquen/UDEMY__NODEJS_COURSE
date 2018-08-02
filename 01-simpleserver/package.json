@@ -7,6 +7,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "author": "Ryan P.C. McQuen",
+  "author": "Ryan P. C. McQuen",
   "license": "GPL-2.0+"
 }
